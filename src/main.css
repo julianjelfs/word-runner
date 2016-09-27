@@ -1,8 +1,36 @@
 body {
   margin: 0;
     padding:20px;
+    font-family: Arial;
 }
 
 textarea {
-    width:400px;
+    width:550px;
 }
+
+button {
+    min-width:120px;
+    min-height:40px;
+}
+
+.runner {
+    padding:20px;
+    background-color: #eee;
+    width:550px;
+    text-align: center;
+}
+
+.current-word {
+    font-size:30px;
+    height:70px;
+    padding-top:20px;
+}
+
+.controls {
+    margin-top:20px;
+}
+
+.remaining-words > span {
+    margin-right: 5px;
+}
+
