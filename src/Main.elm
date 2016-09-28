@@ -5,6 +5,7 @@ import Html.App as Html
 import View
 import Types exposing (..)
 import State
+import Time exposing (Time, second)
 
 init : ( Model, Cmd Msg )
 init =
@@ -16,6 +17,12 @@ main =
         { init = init
         , update = State.update
         , view = View.root
-        , subscriptions = (\m -> Sub.none)
+        , subscriptions = subscriptions
         }
 
+subscriptions: Model -> Sub Msg
+subscriptions model =
+    case model.state of
+        Playing ->
+            Time.every ((60 / (toFloat model.wpm)) * second) Tick
+        _ -> Sub.none

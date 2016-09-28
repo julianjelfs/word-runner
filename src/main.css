@@ -34,3 +34,11 @@ button {
     margin-right: 5px;
 }
 
+.wpm {
+    padding:20px;
+}
+
+.wpm input {
+    width : 400px;
+}
+

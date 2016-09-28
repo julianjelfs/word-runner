@@ -1,9 +1,24 @@
 module TextRunner exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class)
-import Html.Events exposing (onClick)
+import Html.Attributes as Attr exposing (..)
+import Html.Events exposing (..)
 import Types exposing (..)
+
+
+wpm: Model -> Html Msg
+wpm model =
+    div
+        [ class "wpm" ]
+        [ span [] [ text "100" ]
+        , input
+            [ type' "range"
+            , Attr.min "100"
+            , Attr.max "900"
+            , value (toString model.wpm)
+            , onInput UpdateWpm ]
+            []
+        , span [] [text "900"] ]
 
 
 currentWord: String -> Html Msg
@@ -22,13 +37,26 @@ remainingWords words =
                 (\w ->
                     span [] [ text w ] ))
 
-controls: Html Msg
-controls =
+controls: Model -> Html Msg
+controls model =
+    let
+        btn =
+            case model.state of
+                Paused ->
+                    button
+                        [ class "go"
+                        , onClick Start ]
+                        [ text "Go!" ]
+                Playing ->
+                    button
+                        [ class "paused"
+                        , onClick Pause ]
+                        [ text "Pause" ]
+                _ -> div [] []
+    in
     div
         [ class "controls" ]
-        [ button
-            [ class "pause" ]
-            [ text "Pause" ]
+        [ btn
         , button
             [ class "reset"
             , onClick Reset]
@@ -45,6 +73,7 @@ root model =
                [ class "runner" ]
                [ currentWord x
                , remainingWords xs
-               , controls
+               , controls model
+               , wpm model
                ]
 
