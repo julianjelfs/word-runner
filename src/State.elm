@@ -4,6 +4,7 @@ import String
 import Types exposing (..)
 import Debug exposing (log)
 import Animation exposing (px)
+import Time exposing (second)
 
 parseRawText : Maybe String -> List String
 parseRawText raw =
@@ -12,12 +13,15 @@ parseRawText raw =
         Just txt ->
             String.split " " txt
 
-zoom l o =
-    Animation.interrupt
-        [ Animation.to
-            [ Animation.left (px l)
-            , Animation.opacity o ]
-        ]
+zoom t =
+    let
+        ang = Animation.turn t
+        zero = Animation.turn 0
+    in
+        Animation.interrupt
+            [ Animation.to
+                [ Animation.rotate3d zero ang zero ]
+            ]
 
 update : Msg -> Model -> (Model,  Cmd Msg)
 update msg model =
@@ -41,9 +45,9 @@ update msg model =
         Reset ->
             let
                 cs =
-                    zoom 0.0 1.0 model.captureStyle
+                    zoom 0 model.captureStyle
                 rs =
-                    zoom -1000.0 0.0 model.runnerStyle
+                    zoom -0.5 model.runnerStyle
             in
                 ( { model | words = []
                    , state = Capturing
@@ -62,9 +66,9 @@ update msg model =
         SpeedRead ->
             let
                 rs =
-                    zoom 0.0 1.0 model.runnerStyle
+                    zoom 0 model.runnerStyle
                 cs =
-                    zoom -1000.0 0.0 model.captureStyle
+                    zoom -0.5 model.captureStyle
             in
             ( { model | state = Paused
               , words = parseRawText model.rawText

@@ -19,6 +19,7 @@ button {
 
 .capture, .runner {
     position:absolute;
+    backface-visibility: hidden;
 }
 
 .runner {
