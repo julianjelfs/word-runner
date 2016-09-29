@@ -4,11 +4,13 @@ import Html exposing (..)
 import Types exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Animation
 
 root: Model -> Html Msg
 root model =
    div
-       []
+       (Animation.render model.captureStyle
+            ++ [class "capture"])
        [ p
             []
             [ text "Please enter some text in the text box below that you want to speed read" ]

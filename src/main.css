@@ -4,6 +4,10 @@ body {
     font-family: Arial;
 }
 
+.container {
+    position:relative;
+}
+
 textarea {
     width:550px;
 }
@@ -11,6 +15,10 @@ textarea {
 button {
     min-width:120px;
     min-height:40px;
+}
+
+.capture, .runner {
+    position:absolute;
 }
 
 .runner {

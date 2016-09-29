@@ -6,6 +6,7 @@ import View
 import Types exposing (..)
 import State
 import Time exposing (Time, second)
+import Animation exposing (px)
 
 init : ( Model, Cmd Msg )
 init =
@@ -22,7 +23,9 @@ main =
 
 subscriptions: Model -> Sub Msg
 subscriptions model =
-    case model.state of
-        Playing ->
-            Time.every ((60 / (toFloat model.wpm)) * second) Tick
-        _ -> Sub.none
+    Sub.batch
+        [ case model.state of
+            Playing ->
+                Time.every ((60 / (toFloat model.wpm)) * second) Tick
+            _ -> Sub.none
+        , Animation.subscription Animate [ model.captureStyle, model.runnerStyle ] ]

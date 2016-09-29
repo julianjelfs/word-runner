@@ -3,6 +3,7 @@ module State exposing (..)
 import String
 import Types exposing (..)
 import Debug exposing (log)
+import Animation exposing (px)
 
 parseRawText : Maybe String -> List String
 parseRawText raw =
@@ -10,6 +11,13 @@ parseRawText raw =
         Nothing -> []
         Just txt ->
             String.split " " txt
+
+zoom l o =
+    Animation.interrupt
+        [ Animation.to
+            [ Animation.left (px l)
+            , Animation.opacity o ]
+        ]
 
 update : Msg -> Model -> (Model,  Cmd Msg)
 update msg model =
@@ -31,8 +39,16 @@ update msg model =
             ( { model | rawText = if txt == "" then Nothing else Just txt }, Cmd.none )
 
         Reset ->
-            ( { model | words = []
-               , state = Capturing }, Cmd.none )
+            let
+                cs =
+                    zoom 0.0 1.0 model.captureStyle
+                rs =
+                    zoom -1000.0 0.0 model.runnerStyle
+            in
+                ( { model | words = []
+                   , state = Capturing
+                   , captureStyle = cs
+                   , runnerStyle = rs }, Cmd.none )
 
         Start ->
             ( { model | state = Playing }, Cmd.none )
@@ -44,6 +60,18 @@ update msg model =
             ( { model | state = Paused }, Cmd.none )
 
         SpeedRead ->
+            let
+                rs =
+                    zoom 0.0 1.0 model.runnerStyle
+                cs =
+                    zoom -1000.0 0.0 model.captureStyle
+            in
             ( { model | state = Paused
-              , words = parseRawText model.rawText }, Cmd.none )
+              , words = parseRawText model.rawText
+              , runnerStyle = rs
+              , captureStyle = cs }, Cmd.none )
+
+        Animate sub ->
+            ( { model | captureStyle = Animation.update sub model.captureStyle
+             , runnerStyle = Animation.update sub model.runnerStyle }, Cmd.none )
 

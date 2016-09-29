@@ -4,7 +4,7 @@ import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
 import Html.Events exposing (..)
 import Types exposing (..)
-
+import Animation
 
 wpm: Model -> Html Msg
 wpm model =
@@ -65,15 +65,16 @@ controls model =
 
 root: Model -> Html Msg
 root model =
-    case model.words of
-        [] -> div [] []
-        [x] -> div [] [ text ("final word " ++ x) ]
-        x::xs ->
-           div
-               [ class "runner" ]
-               [ currentWord x
-               , remainingWords xs
-               , controls model
-               , wpm model
-               ]
+   div
+       (Animation.render model.runnerStyle
+            ++ [class "runner"])
+            (case model.words of
+                [] -> []
+                [x] -> [ text ("final word " ++ x) ]
+                x::xs ->
+                   [ currentWord x
+                   , remainingWords xs
+                   , controls model
+                   , wpm model
+                   ])
 
