@@ -49,8 +49,7 @@ update msg model =
                 rs =
                     zoom -0.5 model.runnerStyle
             in
-                ( { model | words = []
-                   , state = Capturing
+                ( { model | state = Capturing
                    , captureStyle = cs
                    , runnerStyle = rs }, Cmd.none )
 

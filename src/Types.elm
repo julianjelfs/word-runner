@@ -31,12 +31,12 @@ type Msg =
 
 spring =
     Animation.spring
-        { stiffness = 100
+        { stiffness = 250
         , damping = 10 }
 
 easing =
     Animation.easing
-        { duration = 300 * millisecond
+        { duration = 250 * millisecond
         , ease = (\x -> x^2) }
 
 flat = Animation.turn 0.0
