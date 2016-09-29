@@ -4,6 +4,13 @@ import String
 import Types exposing (..)
 import Debug exposing (log)
 
+parseRawText : Maybe String -> List String
+parseRawText raw =
+    case raw of
+        Nothing -> []
+        Just txt ->
+            String.split " " txt
+
 update : Msg -> Model -> (Model,  Cmd Msg)
 update msg model =
     case msg of
@@ -14,7 +21,7 @@ update msg model =
             let
                 updated =
                     case model.words of
-                        [] -> { model | state = Finished }
+                        [] -> { model | state = Paused, words = parseRawText model.rawText }
                         [x] -> { model | words = [] }
                         x::xs -> { model | words = xs }
             in
@@ -37,13 +44,6 @@ update msg model =
             ( { model | state = Paused }, Cmd.none )
 
         SpeedRead ->
-            let
-                words =
-                    case model.rawText of
-                        Nothing -> []
-                        Just txt ->
-                            String.split " " txt
-            in
             ( { model | state = Paused
-              , words = words }, Cmd.none )
+              , words = parseRawText model.rawText }, Cmd.none )
 
