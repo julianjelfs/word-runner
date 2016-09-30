@@ -24,11 +24,12 @@ toRun model =
         captureStyle = (zoom -0.5 model.captureStyle)
         , runnerStyle = (zoom 0 model.runnerStyle) }
 
-buttonFade alpha styles =
-    { styles | goStyle = (Animation.interrupt
+buttonFade alpha style updater =
+    (Animation.interrupt
         [ Animation.to
             [ Animation.backgroundColor (rgba 0 0 0 alpha) ]
-        ] styles.goStyle) }
+        ] style)
+        |> updater
 
 spring =
     Animation.spring

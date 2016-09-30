@@ -22,11 +22,11 @@ main =
         }
 
 subscriptions: Model -> Sub Msg
-subscriptions model =
+subscriptions {state, wpm, styles } =
     Sub.batch
-        [ case model.state of
+        [ case state of
             Playing ->
-                Time.every ((60 / (toFloat model.wpm)) * second) Tick
+                Time.every ((60 / (toFloat wpm)) * second) Tick
             _ -> Sub.none
-        , Sub.map StylesMsg (Styles.subscriptions model.styles)
+        , Sub.map StylesMsg (Styles.subscriptions styles)
         ]

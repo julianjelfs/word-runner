@@ -41,18 +41,31 @@ remainingWords words =
 controls: Model -> Html Msg
 controls model =
     let
+        styles = model.styles
         btn =
             case model.state of
                 Paused ->
-                    Button.root Start False "Go!" model.styles.startStyle
+                    Button.root
+                        Start False
+                        "Go!"
+                        model.styles.startStyle
+                        (\s -> { styles | startStyle = s })
                 Playing ->
-                    Button.root Pause False "Pause" model.styles.pauseStyle
+                    Button.root
+                        Pause False
+                        "Pause"
+                        model.styles.pauseStyle
+                        (\s -> { styles | pauseStyle = s })
                 _ -> div [] []
     in
     div
         [ class "controls" ]
         [ btn
-        , Button.root Reset False "Reset" model.styles.resetStyle
+        , Button.root
+            Reset False
+            "Reset"
+            model.styles.resetStyle
+            (\s -> { styles | resetStyle = s })
         ]
 
 root: Model -> Html Msg

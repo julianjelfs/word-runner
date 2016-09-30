@@ -29,8 +29,8 @@ type Msg =
     | Tick Float
     | UpdateWpm String
     | StylesMsg Styles.Msg
-    | MouseOverButton
-    | MouseOutButton
+    | MouseOverButton Animation.State (Animation.State -> Styles.Model)
+    | MouseOutButton Animation.State (Animation.State -> Styles.Model)
 
 initialModel : Model
 initialModel =
