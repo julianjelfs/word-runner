@@ -5,6 +5,7 @@ import Types exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Animation
+import Button
 
 root: Model -> Html Msg
 root model =
@@ -22,9 +23,5 @@ root model =
                 , onInput UpdateRawText ]
                 []
             ]
-       , button
-            [ onClick SpeedRead
-            , disabled (model.rawText == Nothing) ]
-            [ text "Speed Read!" ]
-
+       , Button.root SpeedRead (model.rawText == Nothing) "Speed Read!" model.buttonStyle
        ]

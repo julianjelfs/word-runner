@@ -28,4 +28,4 @@ subscriptions model =
             Playing ->
                 Time.every ((60 / (toFloat model.wpm)) * second) Tick
             _ -> Sub.none
-        , Animation.subscription Animate [ model.captureStyle, model.runnerStyle ] ]
+        , Animation.subscription Animate [ model.captureStyle, model.runnerStyle, model.buttonStyle ] ]

@@ -1,5 +1,6 @@
 module State exposing (..)
 
+import Color exposing (rgba)
 import String
 import Types exposing (..)
 import Debug exposing (log)
@@ -23,6 +24,12 @@ zoom t =
                 [ Animation.rotate3d zero ang zero ]
             ]
 
+buttonFade alpha =
+    Animation.interrupt
+        [ Animation.to
+            [ Animation.backgroundColor (rgba 0 0 0 alpha) ]
+        ]
+
 update : Msg -> Model -> (Model,  Cmd Msg)
 update msg model =
     case msg of
@@ -41,6 +48,12 @@ update msg model =
 
         UpdateRawText txt ->
             ( { model | rawText = if txt == "" then Nothing else Just txt }, Cmd.none )
+
+        MouseOverButton ->
+            ( { model | buttonStyle = (buttonFade 0.2 model.buttonStyle) }, Cmd.none )
+
+        MouseOutButton ->
+            ( { model | buttonStyle = (buttonFade 0.1 model.buttonStyle) }, Cmd.none )
 
         Reset ->
             let
@@ -76,5 +89,6 @@ update msg model =
 
         Animate sub ->
             ( { model | captureStyle = Animation.update sub model.captureStyle
-             , runnerStyle = Animation.update sub model.runnerStyle }, Cmd.none )
+             , runnerStyle = Animation.update sub model.runnerStyle
+             , buttonStyle = Animation.update sub model.buttonStyle }, Cmd.none )
 
