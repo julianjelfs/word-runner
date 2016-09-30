@@ -7,12 +7,12 @@ import Types exposing (..)
 import State
 import Time exposing (Time, second)
 import Animation exposing (px)
+import Styles
 
 init : ( Model, Cmd Msg )
 init =
   ( initialModel, Cmd.none )
 
---WIRING
 main =
     Html.program
         { init = init
@@ -28,4 +28,5 @@ subscriptions model =
             Playing ->
                 Time.every ((60 / (toFloat model.wpm)) * second) Tick
             _ -> Sub.none
-        , Animation.subscription Animate [ model.captureStyle, model.runnerStyle, model.buttonStyle ] ]
+        , Sub.map StylesMsg (Styles.subscriptions model.styles)
+        ]

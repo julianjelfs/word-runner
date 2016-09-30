@@ -4,8 +4,8 @@ import Color exposing (rgba)
 import String
 import Types exposing (..)
 import Debug exposing (log)
-import Animation exposing (px)
 import Time exposing (second)
+import Styles exposing (buttonFade, toCapture, toRun, zoom)
 
 parseRawText : Maybe String -> List String
 parseRawText raw =
@@ -13,22 +13,6 @@ parseRawText raw =
         Nothing -> []
         Just txt ->
             String.split " " txt
-
-zoom t =
-    let
-        ang = Animation.turn t
-        zero = Animation.turn 0
-    in
-        Animation.interrupt
-            [ Animation.to
-                [ Animation.rotate3d zero ang zero ]
-            ]
-
-buttonFade alpha =
-    Animation.interrupt
-        [ Animation.to
-            [ Animation.backgroundColor (rgba 0 0 0 alpha) ]
-        ]
 
 update : Msg -> Model -> (Model,  Cmd Msg)
 update msg model =
@@ -50,21 +34,15 @@ update msg model =
             ( { model | rawText = if txt == "" then Nothing else Just txt }, Cmd.none )
 
         MouseOverButton ->
-            ( { model | buttonStyle = (buttonFade 0.2 model.buttonStyle) }, Cmd.none )
+            ( { model | styles = (buttonFade 0.2 model.styles) }, Cmd.none )
 
         MouseOutButton ->
-            ( { model | buttonStyle = (buttonFade 0.1 model.buttonStyle) }, Cmd.none )
+            ( { model | styles = (buttonFade 0.1 model.styles) }, Cmd.none )
 
         Reset ->
-            let
-                cs =
-                    zoom 0 model.captureStyle
-                rs =
-                    zoom -0.5 model.runnerStyle
-            in
-                ( { model | state = Capturing
-                   , captureStyle = cs
-                   , runnerStyle = rs }, Cmd.none )
+            ( { model | state = Capturing
+               , styles = toCapture model.styles
+               }, Cmd.none )
 
         Start ->
             ( { model | state = Playing }, Cmd.none )
@@ -75,20 +53,12 @@ update msg model =
         Pause ->
             ( { model | state = Paused }, Cmd.none )
 
+        StylesMsg sub ->
+            ( { model | styles = Styles.update sub model.styles }, Cmd.none )
+
         SpeedRead ->
-            let
-                rs =
-                    zoom 0 model.runnerStyle
-                cs =
-                    zoom -0.5 model.captureStyle
-            in
             ( { model | state = Paused
               , words = parseRawText model.rawText
-              , runnerStyle = rs
-              , captureStyle = cs }, Cmd.none )
+              , styles = toRun model.styles }, Cmd.none )
 
-        Animate sub ->
-            ( { model | captureStyle = Animation.update sub model.captureStyle
-             , runnerStyle = Animation.update sub model.runnerStyle
-             , buttonStyle = Animation.update sub model.buttonStyle }, Cmd.none )
 

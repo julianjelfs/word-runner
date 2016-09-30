@@ -1,5 +1,6 @@
 module TextRunner exposing (..)
 
+import Button
 import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
 import Html.Events exposing (..)
@@ -43,30 +44,21 @@ controls model =
         btn =
             case model.state of
                 Paused ->
-                    button
-                        [ class "go"
-                        , onClick Start ]
-                        [ text "Go!" ]
+                    Button.root Start False "Go!" model.styles.startStyle
                 Playing ->
-                    button
-                        [ class "paused"
-                        , onClick Pause ]
-                        [ text "Pause" ]
+                    Button.root Pause False "Pause" model.styles.pauseStyle
                 _ -> div [] []
     in
     div
         [ class "controls" ]
         [ btn
-        , button
-            [ class "reset"
-            , onClick Reset]
-            [ text "Reset" ]
+        , Button.root Reset False "Reset" model.styles.resetStyle
         ]
 
 root: Model -> Html Msg
 root model =
    div
-       (Animation.render model.runnerStyle
+       (Animation.render model.styles.runnerStyle
             ++ [class "runner"])
             (case model.words of
                 [] -> []

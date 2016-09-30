@@ -10,7 +10,7 @@ import Button
 root: Model -> Html Msg
 root model =
    div
-       (Animation.render model.captureStyle
+       (Animation.render model.styles.captureStyle
             ++ [class "capture"])
        [ p
             []
@@ -23,5 +23,5 @@ root model =
                 , onInput UpdateRawText ]
                 []
             ]
-       , Button.root SpeedRead (model.rawText == Nothing) "Speed Read!" model.buttonStyle
+       , Button.root SpeedRead (model.rawText == Nothing) "Speed Read!" model.styles.goStyle
        ]
