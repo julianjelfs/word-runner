@@ -6,6 +6,7 @@ import Html.Attributes as Attr exposing (..)
 import Html.Events exposing (..)
 import Types exposing (..)
 import Animation
+import SeeCode
 
 wpm: Model -> Html Msg
 wpm model =
@@ -81,5 +82,6 @@ root model =
                    , remainingWords xs
                    , controls model
                    , wpm model
+                   , SeeCode.root
                    ])
 

@@ -13,11 +13,6 @@ root model =
        [ h1
            []
            [ text "Word Runner" ]
-{-       , div
-            []
-            [ case model.state of
-                Capturing -> TextCapture.root model
-                _ -> TextRunner.root model ]-}
        , TextCapture.root model
        , TextRunner.root model
        ]
