@@ -9,25 +9,26 @@ type FadeType =
     FadeIn
     | FadeOut
 
-zoom t =
+zoom t o =
     let
         ang = Animation.turn t
         zero = Animation.turn 0
     in
         Animation.interrupt
             [ Animation.to
-                [ Animation.rotate3d zero ang zero ]
+                [ Animation.rotate3d zero ang zero
+                , Animation.opacity o ]
             ]
 
 toCapture model =
     { model |
-        captureStyle = (zoom 0 model.captureStyle)
-        , runnerStyle = (zoom -0.5 model.runnerStyle) }
+        captureStyle = (zoom 0 1 model.captureStyle)
+        , runnerStyle = (zoom -0.5 0 model.runnerStyle) }
 
 toRun model =
     { model |
-        captureStyle = (zoom -0.5 model.captureStyle)
-        , runnerStyle = (zoom 0 model.runnerStyle) }
+        captureStyle = (zoom -0.5 0 model.captureStyle)
+        , runnerStyle = (zoom 0 1 model.runnerStyle) }
 
 buttonFade fadeType style updater =
     let
@@ -79,10 +80,12 @@ initialModel =
     Model
         (Animation.styleWith
             easing
-            [ Animation.rotate3d flat flat flat ])
+            [ Animation.rotate3d flat flat flat
+            , Animation.opacity 1 ])
         (Animation.styleWith
             easing
-            [ Animation.rotate3d flat back flat ])
+            [ Animation.rotate3d flat back flat
+            , Animation.opacity 0 ])
         buttonInit
         buttonInit
         buttonInit
