@@ -6,6 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Animation
 import Button
+import SeeCode
 
 root: Model -> Html Msg
 root model =
@@ -32,4 +33,5 @@ root model =
                 "Speed Read!"
                 model.styles.goStyle
                 (\s -> { styles | goStyle = s })
+           , SeeCode.root
            ]

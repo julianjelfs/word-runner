@@ -140,3 +140,6 @@ input[type=range]:focus::-ms-fill-upper {
     background: #367ebd;
 }
 
+.see-code {
+    margin-top: 10px;
+}
