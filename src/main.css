@@ -47,14 +47,14 @@ button {
     padding:20px;
 }
 
-.wpm input {
-    width : 400px;
+.wpm span {
+    padding: 0 10px 0 10px;
 }
 
 input[type=range] {
     -webkit-appearance: none;
     margin: 18px 0;
-    width: 100%;
+    width: 400px;
 }
 input[type=range]:focus {
     outline: none;
