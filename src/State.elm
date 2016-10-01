@@ -34,10 +34,10 @@ update msg model =
             ( { model | rawText = if txt == "" then Nothing else Just txt }, Cmd.none )
 
         MouseOverButton style styleUpdater ->
-            ( { model | styles = (buttonFade 0.2 style styleUpdater) }, Cmd.none )
+            ( { model | styles = (buttonFade Styles.FadeIn style styleUpdater) }, Cmd.none )
 
         MouseOutButton style styleUpdater ->
-            ( { model | styles = (buttonFade 0.1 style styleUpdater) }, Cmd.none )
+            ( { model | styles = (buttonFade Styles.FadeOut style styleUpdater) }, Cmd.none )
 
         Reset ->
             ( { model | state = Capturing

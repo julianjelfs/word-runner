@@ -1,8 +1,13 @@
 module Styles exposing (..)
 
 import Animation
-import Color exposing (rgba)
+import Color exposing (black, rgba, white)
+import Debug exposing (log)
 import Time exposing (millisecond)
+
+type FadeType =
+    FadeIn
+    | FadeOut
 
 zoom t =
     let
@@ -24,10 +29,20 @@ toRun model =
         captureStyle = (zoom -0.5 model.captureStyle)
         , runnerStyle = (zoom 0 model.runnerStyle) }
 
-buttonFade alpha style updater =
+buttonFade fadeType style updater =
+    let
+        (bg, fg) =
+            case fadeType of
+                FadeIn ->
+                    ((rgba 0 0 0 0.2), white) |> (log "fadein")
+                FadeOut ->
+                    ((rgba 0 0 0 0.1), black) |> (log "fadeout")
+    in
     (Animation.interrupt
         [ Animation.to
-            [ Animation.backgroundColor (rgba 0 0 0 alpha) ]
+            [ Animation.backgroundColor bg
+            --, Animation.color fg
+            ]
         ] style)
         |> updater
 
@@ -54,7 +69,11 @@ type alias Model =
     }
 
 buttonInit =
-    Animation.style [ Animation.backgroundColor (rgba 0 0 0 0.1 ) ]
+    Animation.styleWith
+        easing
+        [ Animation.backgroundColor (rgba 0 0 0 0.1 )
+        --, Animation.color (rgba 0 0 0 1)
+        ]
 
 initialModel =
     Model
