@@ -7,31 +7,48 @@ import Debug exposing (log)
 import Time exposing (second)
 import Styles exposing (buttonFade, toCapture, toRun, zoom)
 
+
 parseRawText : Maybe String -> List String
 parseRawText raw =
     case raw of
-        Nothing -> []
+        Nothing ->
+            []
+
         Just txt ->
             String.split " " txt
 
-update : Msg -> Model -> (Model,  Cmd Msg)
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         None ->
-            (model, Cmd.none)
+            ( model, Cmd.none )
 
         Tick t ->
             let
                 updated =
                     case model.words of
-                        [] -> { model | state = Paused, words = parseRawText model.rawText }
-                        [x] -> { model | words = [] }
-                        x::xs -> { model | words = xs }
+                        [] ->
+                            { model | state = Paused, words = parseRawText model.rawText }
+
+                        [ x ] ->
+                            { model | words = [] }
+
+                        x :: xs ->
+                            { model | words = xs }
             in
-                (updated, Cmd.none)
+                ( updated, Cmd.none )
 
         UpdateRawText txt ->
-            ( { model | rawText = if txt == "" then Nothing else Just txt }, Cmd.none )
+            ( { model
+                | rawText =
+                    if txt == "" then
+                        Nothing
+                    else
+                        Just txt
+              }
+            , Cmd.none
+            )
 
         MouseOverButton style styleUpdater ->
             ( { model | styles = (buttonFade Styles.FadeIn style styleUpdater) }, Cmd.none )
@@ -40,9 +57,12 @@ update msg model =
             ( { model | styles = (buttonFade Styles.FadeOut style styleUpdater) }, Cmd.none )
 
         Reset ->
-            ( { model | state = Capturing
-               , styles = toCapture model.styles
-               }, Cmd.none )
+            ( { model
+                | state = Capturing
+                , styles = toCapture model.styles
+              }
+            , Cmd.none
+            )
 
         Start ->
             ( { model | state = Playing }, Cmd.none )
@@ -57,8 +77,10 @@ update msg model =
             ( { model | styles = Styles.update sub model.styles }, Cmd.none )
 
         SpeedRead ->
-            ( { model | state = Paused
-              , words = parseRawText model.rawText
-              , styles = toRun model.styles }, Cmd.none )
-
-
+            ( { model
+                | state = Paused
+                , words = parseRawText model.rawText
+                , styles = toRun model.styles
+              }
+            , Cmd.none
+            )

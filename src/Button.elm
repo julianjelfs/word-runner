@@ -6,11 +6,14 @@ import Html.Events exposing (..)
 import Types exposing (..)
 import Animation
 
+
 root clickFn disabledPredicate txt style updater =
     button
-        ( Animation.render style
+        (Animation.render style
             ++ [ onClick clickFn
-                , onMouseOver (MouseOverButton style updater )
-                , onMouseOut (MouseOutButton style updater )
-                , disabled disabledPredicate ] )
+               , onMouseOver (MouseOverButton style updater)
+               , onMouseOut (MouseOutButton style updater)
+               , disabled disabledPredicate
+               ]
+        )
         [ text txt ]
